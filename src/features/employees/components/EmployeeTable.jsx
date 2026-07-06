@@ -1,9 +1,17 @@
-const EmployeeTable = ({ employees = [] }) => {
+import EmployeeRow from "./EmployeeRow";
+import TableHeader from "../../../components/ui/table/TableHeader";
+
+const EmployeeTable = ({ employees }) => {
   return (
-    <div>
-      {employees.map((employee) => (
-        <h3 key={employee.id}>{employee.name}</h3>
-      ))}
+    <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
+      <table className="w-full border-collapse">
+        <TableHeader />
+        <tbody>
+          {employees.map((employee) => (
+            <EmployeeRow key={employee.id} employee={employee} />
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
