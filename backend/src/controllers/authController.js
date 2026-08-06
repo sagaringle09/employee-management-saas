@@ -1,19 +1,11 @@
 const { registerService } = require("../services/authService");
 
-const registerController = async (req, res) => {
+const registerController = async (req, res, next) => {
   try {
     // Get data sent from React/Postman
     const userData = req.body;
     // Ask the service to register the user
     const result = await registerService(userData);
-
-    // If service says registration failed
-    if (!result.success) {
-      return res.status(409).json({
-        success: false,
-        message: result.message,
-      });
-    }
 
     // Registration successful
     return res.status(201).json({
@@ -21,10 +13,7 @@ const registerController = async (req, res) => {
       message: result.message,
     });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };
 

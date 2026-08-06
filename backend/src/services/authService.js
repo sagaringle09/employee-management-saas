@@ -13,10 +13,9 @@ const registerService = async (userData) => {
 
   // If email already exists, stop here
   if (existingUser.rows.length > 0) {
-    return {
-      success: false,
-      message: "Email already exists",
-    };
+    const error = new Error("Email already exists");
+    error.statusCode = 409;
+    throw error;
   }
 
   //2. hashed Password
@@ -24,7 +23,7 @@ const registerService = async (userData) => {
 
   //3. Insert User
   const newUser = await pool.query(
-    `INSERT INTO users (first_name, last_name, email, password, role) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+    `INSERT INTO users (first_name, last_name, email, password, role) VALUES ($1, $2, $3, $4, $5) RETURNING id, first_name, last_name, email, role`,
     [firstName, lastName, email, hashedPassword, role],
   );
 
