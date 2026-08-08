@@ -5,6 +5,7 @@ const errorMiddleware = require("./middlewares/errorMiddleware");
 
 app.use(express.json()); //Enable JSON body parsing
 app.use("/api/v1/auth", authRoutes);
+
 //Add a test route
 app.get("/", (req, res) => {
   res.status(200).json({

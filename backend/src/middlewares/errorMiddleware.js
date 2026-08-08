@@ -4,5 +4,6 @@ const errorMiddleware = (error, req, res, next) => {
     success: false,
     message: error.message || "Internal Server Error",
   });
+  
 };
 module.exports = errorMiddleware;

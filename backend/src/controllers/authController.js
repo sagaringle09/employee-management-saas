@@ -1,4 +1,4 @@
-const { registerService } = require("../services/authService");
+const { registerService, loginService } = require("../services/authService");
 
 const registerController = async (req, res, next) => {
   try {
@@ -10,7 +10,26 @@ const registerController = async (req, res, next) => {
     // Registration successful
     return res.status(201).json({
       success: true,
-      message: result.message,
+      message: "User registered successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const loginController = async (req, res, next) => {
+  try {
+    // Get login credentials
+    const userData = req.body;
+    // Authenticate user
+    const result = await loginService(userData);
+
+    // Send JWT token and user details
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token: result.token,
+      user: result.user,
     });
   } catch (error) {
     next(error);
@@ -19,4 +38,5 @@ const registerController = async (req, res, next) => {
 
 module.exports = {
   registerController,
+  loginController,
 };
