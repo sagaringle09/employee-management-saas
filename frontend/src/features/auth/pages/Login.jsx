@@ -7,8 +7,12 @@ import { loginUser } from "../services/authService";
 import AuthLayout from "../components/auth/authLayout";
 import InputField from "../components/auth/InputField";
 import PrimaryButton from "../components/ui/PrimaryButton";
+import { setToken } from "../utils/authStorage";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../authSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
     register,
@@ -26,12 +30,20 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       const result = await loginUser(data);
-
+      // Store user id and role in Redux store
+      dispatch(
+        setCredentials({
+          user: result.user,
+        }),
+      );
+      // Store JWT token in localStorage
+      setToken(result.token);
       console.log("Login Successful:", result);
       navigate("/Dashboard", {
         state: { message: "Login successful" },
       });
     } catch (error) {
+      console.error("Login Error:", error);
       if (error.status === 401) {
         setError("root.serverError", {
           type: "server",
@@ -79,6 +91,11 @@ const Login = () => {
           Register
         </Link>
       </p>
+      {errors.root?.serverError && (
+        <p className="text-sm text-red-500">
+          {errors.root.serverError.message}
+        </p>
+      )}
     </AuthLayout>
   );
 };

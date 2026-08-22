@@ -83,14 +83,22 @@ const loginService = async (userData) => {
     token,
     user: {
       id: user.id,
-      firstName: user.first_name,
-      lastName: user.last_name,
-      email: user.email,
       role: user.role,
     },
   };
 };
+
+//================================ Current User Service =========================================
+const getCurrentUserService = async (userId) => {
+  const currentUser = await pool.query(
+    `SELECT id, first_name, last_name, email, role FROM users WHERE id = $1`,
+    [userId],
+  );
+  return currentUser.rows[0];
+};
+
 module.exports = {
   registerService,
   loginService,
+  getCurrentUserService,
 };

@@ -1,3 +1,4 @@
+import { removeToken } from "@/features/auth/utils/authStorage";
 import {
   Search,
   LayoutDashboard,
@@ -6,8 +7,16 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    removeToken();
+    navigate("/login", {
+      replace: true,
+    });
+  };
   return (
     <div className="min-h-screen bg-slate-100">
       <div className="flex min-h-screen">
@@ -74,7 +83,9 @@ function Dashboard() {
               className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-500 transition hover:bg-red-50 hover:text-red-600"
             >
               <LogOut size={18} />
-              <span>Logout</span>
+              <span onClick={handleLogout} className="cursor-pointer">
+                Logout
+              </span>
             </button>
           </div>
         </aside>

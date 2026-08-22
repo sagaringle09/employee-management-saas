@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const authMiddleware = (req, res, next) => {
   try {
     //Read Authorization header
-    const authHeader = req.Header.authorization;
+    const authHeader = req.headers.authorization;
 
     //Check if token is provided
     if (!authHeader) {
@@ -23,7 +23,16 @@ const authMiddleware = (req, res, next) => {
     //continue to next middleware / controller
     next();
   } catch (error) {
-    error.statusCode = error.statusCode || 401;
+    if (error.name === "TokenExpiredError") {
+      error.statusCode = 401;
+      error.message = "Token has expired";
+    }
+
+    if (error.name === "JsonWebTokenError") {
+      error.statusCode = 401;
+      error.message = "Invalid token";
+    }
+
     next(error);
   }
 };

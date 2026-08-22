@@ -1,6 +1,6 @@
 import api from "../../../api/axios";
 
-// Register a New User
+//====================== Register a New User ============================
 const registerUser = async (userData) => {
   try {
     const response = await api.post("/auth/register", userData);
@@ -18,7 +18,8 @@ const registerUser = async (userData) => {
     throw customError;
   }
 };
-// Login User
+
+//========================= Login User ===============================
 const loginUser = async (userData) => {
   try {
     const response = await api.post("/auth/login", userData);
@@ -38,4 +39,18 @@ const loginUser = async (userData) => {
   }
 };
 
-export { registerUser, loginUser };
+//============================= Get Current User ==========================
+const getCurrentUser = async () => {
+  try {
+    const response = await api.get("/auth/me");
+    return response.data;
+  } catch (error) {
+    const customError = new Error(
+      error.response?.data?.message || "Failed restore session",
+    );
+    customError.status = error.response?.status;
+    throw customError;
+  }
+};
+
+export { registerUser, loginUser, getCurrentUser };
