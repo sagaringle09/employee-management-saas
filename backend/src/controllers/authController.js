@@ -14,7 +14,7 @@ const registerController = async (req, res, next) => {
     // Registration successful
     return res.status(201).json({
       success: true,
-      message: "User registered successfully",
+      message: result.message,
     });
   } catch (error) {
     next(error);

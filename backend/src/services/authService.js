@@ -32,6 +32,7 @@ const registerService = async (userData) => {
   // 4. Return success result
   return {
     success: true,
+    message: "User registered successfully",
     data: newUser.rows[0],
   };
 };

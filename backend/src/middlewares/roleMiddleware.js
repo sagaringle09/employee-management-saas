@@ -8,7 +8,7 @@ const authorizeRoles = (...allowedRoles) => {
     }
 
     // Check whether user's role is allowed
-    if (!allowesRoles.includes(req.user.role)) {
+    if (!allowedRoles.includes(req.user.role)) {
       const error = new Error(
         "You do not have permission to perform this action",
       );

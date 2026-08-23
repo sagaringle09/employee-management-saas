@@ -3,6 +3,7 @@ const cors = require("cors");
 const app = express(); //Create the Express App
 const authRoutes = require("./routes/authRoutes");
 const errorMiddleware = require("./middlewares/errorMiddleware");
+const employeeRoutes = require("./routes/employeeRoutes");
 
 app.use(express.json()); //Enable JSON body parsing
 //CORS
@@ -12,6 +13,7 @@ app.use(
   }),
 );
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/employees", employeeRoutes);
 
 //Add a test route
 app.get("/", (req, res) => {
