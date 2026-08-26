@@ -64,4 +64,14 @@ const createEmployeeService = async (employeeData) => {
   };
 };
 
-module.exports = { createEmployeeService };
+const getEmployeesService = async () => {
+  const result = await pool.query(
+    `SELECT id, employee_code, first_name, last_name, email, phone, department, designation, salary, joining_date, status, created_at FROM employees ORDER BY created_at DESC`,
+  );
+  return {
+    success: true,
+    data: result.rows,
+  };
+};
+
+module.exports = { createEmployeeService, getEmployeesService };

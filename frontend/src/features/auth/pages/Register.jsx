@@ -5,9 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../validation/authSchema";
 import { registerUser } from "../services/authService";
 import AuthLayout from "../components/auth/authLayout";
-import InputField from "../components/auth/InputField";
-import SelectField from "../components/auth/SelectField";
-import PrimaryButton from "../components/ui/PrimaryButton";
+import InputField from "../../../components/common/InputField";
+import SelectField from "../../../components/common/SelectField";
+import PrimaryButton from "../../../components/common/PrimaryButton";
 
 const Register = () => {
   const navigate = useNavigate();

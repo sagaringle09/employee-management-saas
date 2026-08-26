@@ -1,4 +1,7 @@
-const { createEmployeeService } = require("../services/employeeService");
+const {
+  createEmployeeService,
+  getEmployeesService,
+} = require("../services/employeeService");
 
 const createEmployeeController = async (req, res, next) => {
   try {
@@ -19,4 +22,18 @@ const createEmployeeController = async (req, res, next) => {
   }
 };
 
-module.exports = { createEmployeeController };
+const getEmployeesController = async (req, res, next) => {
+  try {
+    // Call service to get employees
+    const result = await getEmployeesService();
+
+    // Send employees to client
+    return res.status(200).json({
+      success: true,
+      data: result.data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = { createEmployeeController, getEmployeesController };

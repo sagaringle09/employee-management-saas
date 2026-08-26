@@ -1,4 +1,4 @@
-import api from "../../../api/axios";
+import api from "../../../services/axios";
 
 //====================== Register a New User ============================
 const registerUser = async (userData) => {

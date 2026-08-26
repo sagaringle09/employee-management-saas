@@ -13,3 +13,20 @@ const InputField = ({ type, placeholder, register, name, error }) => {
   );
 };
 export default InputField;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

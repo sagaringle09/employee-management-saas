@@ -5,8 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../validation/authSchema";
 import { loginUser } from "../services/authService";
 import AuthLayout from "../components/auth/authLayout";
-import InputField from "../components/auth/InputField";
-import PrimaryButton from "../components/ui/PrimaryButton";
+import InputField from "../../../components/common/InputField";
+import PrimaryButton from "../../../components/common/PrimaryButton";
 import { setToken } from "../utils/authStorage";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../authSlice";
@@ -39,7 +39,7 @@ const Login = () => {
       // Store JWT token in localStorage
       setToken(result.token);
       console.log("Login Successful:", result);
-      navigate("/Dashboard", {
+      navigate("/admin", {
         state: { message: "Login successful" },
       });
     } catch (error) {
