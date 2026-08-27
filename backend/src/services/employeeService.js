@@ -64,6 +64,7 @@ const createEmployeeService = async (employeeData) => {
   };
 };
 
+// Get All Employees
 const getEmployeesService = async () => {
   const result = await pool.query(
     `SELECT id, employee_code, first_name, last_name, email, phone, department, designation, salary, joining_date, status, created_at FROM employees ORDER BY created_at DESC`,
@@ -74,4 +75,27 @@ const getEmployeesService = async () => {
   };
 };
 
-module.exports = { createEmployeeService, getEmployeesService };
+// Get Single Employee By Id
+const getEmployeeByIdService = async (id) => {
+  const employee = await pool.query(
+    `SELECT id, employee_code, first_name, last_name, email, phone, department, designation, salary, joining_date, status, created_at FROM employees WHERE id = $1`,
+    [id],
+  );
+
+  if (employee.rows.length === 0) {
+    const error = new Error("Employee Not Found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return {
+    success: true,
+    data: employee.rows[0],
+  };
+};
+
+module.exports = {
+  createEmployeeService,
+  getEmployeesService,
+  getEmployeeByIdService,
+};

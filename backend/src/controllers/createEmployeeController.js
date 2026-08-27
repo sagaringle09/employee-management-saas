@@ -1,6 +1,7 @@
 const {
   createEmployeeService,
   getEmployeesService,
+  getEmployeeByIdService,
 } = require("../services/employeeService");
 
 const createEmployeeController = async (req, res, next) => {
@@ -36,4 +37,27 @@ const getEmployeesController = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = { createEmployeeController, getEmployeesController };
+
+const getEmployeeByIdController = async (req, res, next) => {
+  try {
+    // Get id from  URL 
+    const id = req.params.id;
+
+    // Call service to get employee
+    const result = await getEmployeeByIdService(id);
+
+    // Send employee to client
+    return res.status(200).json({
+      success: true,
+      data: result.data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  createEmployeeController,
+  getEmployeesController,
+  getEmployeeByIdController,
+};

@@ -6,6 +6,7 @@ const authorizeRoles = require("../middlewares/roleMiddleware");
 const {
   createEmployeeController,
   getEmployeesController,
+  getEmployeeByIdController,
 } = require("../controllers/createEmployeeController");
 
 // Admin &  HR can create employees
@@ -19,8 +20,15 @@ router.post(
 router.get(
   "/",
   authMiddleware,
-  authorizeRoles("admin","hr","manager"),
-  getEmployeesController
-)
+  authorizeRoles("admin", "hr", "manager"),
+  getEmployeesController,
+);
+//Get employee
+router.get(
+  "/:id",
+  authMiddleware,
+  authorizeRoles("admin", "hr", "manager"),
+  getEmployeeByIdController,
+);
 
 module.exports = router;
