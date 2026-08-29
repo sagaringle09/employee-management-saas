@@ -94,8 +94,116 @@ const getEmployeeByIdService = async (id) => {
   };
 };
 
+// Update Employee using id
+const updateEmployeeService = async (id, employeeData) => {
+  const {
+    employeeCode,
+    firstName,
+    lastName,
+    email,
+    phone,
+    department,
+    designation,
+    salary,
+    joiningDate,
+  } = employeeData;
+
+  // Check whether email already belongs to another employee
+  const existingEmployee = await pool.query(
+    `SELECT id
+     FROM employees
+     WHERE email = $1 AND id != $2`,
+    [email, id],
+  );
+
+  if (existingEmployee.rows.length > 0) {
+    const error = new Error("Email already exists");
+    error.statusCode = 409;
+    throw error;
+  }
+
+  // Check whether employee code already belongs to another employee
+  const existingEmployeeCode = await pool.query(
+    `SELECT id
+     FROM employees
+     WHERE employee_code = $1 AND id != $2`,
+    [employeeCode, id],
+  );
+
+  if (existingEmployeeCode.rows.length > 0) {
+    const error = new Error("Employee code already exists");
+    error.statusCode = 409;
+    throw error;
+  }
+
+  try {
+    const employee = await pool.query(
+      `UPDATE employees
+       SET
+         employee_code = $1,
+         first_name = $2,
+         last_name = $3,
+         email = $4,
+         phone = $5,
+         department = $6,
+         designation = $7,
+         salary = $8,
+         joining_date = $9
+       WHERE id = $10
+       RETURNING
+         id,
+         employee_code,
+         first_name,
+         last_name,
+         email,
+         phone,
+         department,
+         designation,
+         salary,
+         joining_date,
+         status,
+         created_at`,
+      [
+        employeeCode,
+        firstName,
+        lastName,
+        email,
+        phone,
+        department,
+        designation,
+        salary,
+        joiningDate,
+        id,
+      ],
+    );
+
+    if (employee.rows.length === 0) {
+      const error = new Error("Employee Not Found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    return {
+      success: true,
+      message: "Employee updated successfully",
+      data: employee.rows[0],
+    };
+  } catch (error) {
+    // PostgreSQL unique constraint violation
+    if (error.code === "23505") {
+      const customError = new Error("Email or employee code already exists");
+
+      customError.statusCode = 409;
+      throw customError;
+    }
+
+    throw error;
+  }
+};
+
 module.exports = {
   createEmployeeService,
   getEmployeesService,
   getEmployeeByIdService,
+  updateEmployeeService,
 };

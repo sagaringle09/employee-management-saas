@@ -2,6 +2,7 @@ const {
   createEmployeeService,
   getEmployeesService,
   getEmployeeByIdService,
+  updateEmployeeService,
 } = require("../services/employeeService");
 
 const createEmployeeController = async (req, res, next) => {
@@ -40,7 +41,7 @@ const getEmployeesController = async (req, res, next) => {
 
 const getEmployeeByIdController = async (req, res, next) => {
   try {
-    // Get id from  URL 
+    // Get id from  URL
     const id = req.params.id;
 
     // Call service to get employee
@@ -56,8 +57,25 @@ const getEmployeeByIdController = async (req, res, next) => {
   }
 };
 
+const updateEmployeeController = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const employeeData = req.body;
+
+    const result = await updateEmployeeService(id, employeeData);
+
+    return res.status(200).json({
+      success: true,
+      data: result.data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createEmployeeController,
   getEmployeesController,
   getEmployeeByIdController,
+  updateEmployeeController,
 };

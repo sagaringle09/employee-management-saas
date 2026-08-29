@@ -7,6 +7,7 @@ const {
   createEmployeeController,
   getEmployeesController,
   getEmployeeByIdController,
+  updateEmployeeController,
 } = require("../controllers/createEmployeeController");
 
 // Admin &  HR can create employees
@@ -23,12 +24,19 @@ router.get(
   authorizeRoles("admin", "hr", "manager"),
   getEmployeesController,
 );
-//Get employee
+// Get employee
 router.get(
   "/:id",
   authMiddleware,
   authorizeRoles("admin", "hr", "manager"),
   getEmployeeByIdController,
+);
+// Update employee
+router.patch(
+  "/:id",
+  authMiddleware,
+  authorizeRoles("admin", "hr"),
+  updateEmployeeController,
 );
 
 module.exports = router;
