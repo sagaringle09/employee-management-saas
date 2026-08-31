@@ -8,6 +8,7 @@ const {
   getEmployeesController,
   getEmployeeByIdController,
   updateEmployeeController,
+  deactivateEmployeeController,
 } = require("../controllers/createEmployeeController");
 
 // Admin &  HR can create employees
@@ -37,6 +38,13 @@ router.patch(
   authMiddleware,
   authorizeRoles("admin", "hr"),
   updateEmployeeController,
+);
+// Delete employee
+router.patch(
+  "/:id/deactivate",
+  authMiddleware,
+  authorizeRoles("admin"),
+  deactivateEmployeeController,
 );
 
 module.exports = router;
