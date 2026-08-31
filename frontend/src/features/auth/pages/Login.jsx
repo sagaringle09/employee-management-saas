@@ -6,10 +6,10 @@ import { loginSchema } from "../validation/authSchema";
 import { loginUser } from "../services/authService";
 import AuthLayout from "../components/auth/authLayout";
 import InputField from "../../../components/common/InputField";
-import PrimaryButton from "../../../components/common/PrimaryButton";
 import { setToken } from "../utils/authStorage";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../authSlice";
+import AuthButton from "../components/auth/AuthButton";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -78,9 +78,9 @@ const Login = () => {
           register={register}
           error={errors.password}
         />
-        <PrimaryButton type="submit" disabled={isSubmitting}>
+        <AuthButton type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Logging..." : "Login"}
-        </PrimaryButton>
+        </AuthButton>
       </form>
       <p className="text-center text-sm text-gray-500 mt-6">
         Don't have an account?{" "}

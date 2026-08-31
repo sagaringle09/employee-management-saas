@@ -2,12 +2,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { employeeSchema } from "../validation/employeeSchema";
 import InputField from "@/components/common/InputField";
-import PrimaryButton from "@/components/common/PrimaryButton";
-import SecondaryButton from "@/components/common/SecondaryButton";
-import { createEmployee } from "../services/employeeService";
-import { useState } from "react";
+import PrimaryButton from "@/features/employee/components/PrimaryButton";
+import SecondaryButton from "@/features/employee/components/SecondaryButton";
+import {
+  createEmployee,
+  getEmployeeById,
+  updateEmployee,
+} from "../services/employeeService";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { formatDateInput } from "@/utils/formatDateInput";
+import { CircleX, Pencil } from "lucide-react";
 
 const EmployeeForm = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const isEditMode = Boolean(id);
   const [successMessage, setSuccessMessage] = useState("");
   const {
     register,
@@ -31,14 +41,21 @@ const EmployeeForm = () => {
   });
   const onSubmit = async (data) => {
     try {
-      const result = await createEmployee(data);
-      // Show success message
-      setSuccessMessage(result.message);
-      // Clear form after successful creation
-      reset();
+      let result;
+
+      if (isEditMode) {
+        result = await updateEmployee(id, data);
+      } else {
+        result = await createEmployee(data);
+        // Show success message
+        setSuccessMessage(result.message);
+        // Clear form after successful creation
+        reset();
+        navigate("/admin/employees");
+      }
     } catch (error) {
-      if (error.status === 409) {
-        setError("email", {
+      if (error.status === 409 && error.field) {
+        setError(error.field, {
           type: "server",
           message: error.message,
         });
@@ -51,13 +68,45 @@ const EmployeeForm = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (!isEditMode) {
+      return;
+    }
+
+    const fetchEmployee = async () => {
+      try {
+        const result = await getEmployeeById(id);
+        const employee = result.data;
+        reset({
+          employeeCode: employee.employee_code,
+          firstName: employee.first_name,
+          lastName: employee.last_name,
+          email: employee.email,
+          phone: employee.phone,
+          department: employee.department,
+          designation: employee.designation,
+          salary: employee.salary,
+          joiningDate: formatDateInput(employee.joining_date),
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchEmployee();
+  }, [id, isEditMode, reset]);
   return (
     <div className="mx-auto max-w-4xl">
       {/* Page Header */}
       <div className="mt-8 mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Add Employee</h1>
+        <h1 className="text-2xl font-bold text-gray-900">
+          {isEditMode ? "Edit Employee" : "Add Employee"}
+        </h1>
         <p className="mt-1 text-sm text-gray-500">
-          Add a new employee to your organization.
+          {isEditMode
+            ? "Update employee information."
+            : "Add a new employee to your organization."}
         </p>
       </div>
 
@@ -158,15 +207,28 @@ const EmployeeForm = () => {
               error={errors.joiningDate}
             />
           </div>
-          <div className="flex gap-2 justify-end">
-            <div className="w-32">
-              <SecondaryButton type="button">Cancel</SecondaryButton>
-            </div>
-            <div className="w-32">
-              <PrimaryButton type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Creating..." : "Create"}
-              </PrimaryButton>
-            </div>
+          <div className="flex gap-2 justify-end ">
+            <SecondaryButton
+              onClick={() => navigate("/admin/employees")}
+              type="button"
+            >
+              <CircleX size={15} />
+              <span> Cancel</span>
+            </SecondaryButton>
+
+            <PrimaryButton type="submit" disabled={isSubmitting}>
+              <Pencil size={15} />
+              <span>
+                {" "}
+                {isSubmitting
+                  ? isEditMode
+                    ? "Updating..."
+                    : "Creating..."
+                  : isEditMode
+                    ? "Update"
+                    : "Create"}
+              </span>
+            </PrimaryButton>
           </div>
         </form>
       </div>

@@ -72,13 +72,12 @@ const AdminSidebar = ({ handleLogout }) => {
       {/* Logout */}
       <div className="border-t border-slate-200 p-4">
         <button
+          onClick={handleLogout}
           type="button"
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-500 transition hover:bg-red-50 hover:text-red-600"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-500 transition hover:bg-red-50 hover:text-red-600 cursor-pointer"
         >
           <LogOut size={18} />
-          <span onClick={handleLogout} className="cursor-pointer">
-            Logout
-          </span>
+          <span className="cursor-pointer">Logout</span>
         </button>
       </div>
     </aside>

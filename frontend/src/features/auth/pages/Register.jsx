@@ -7,7 +7,7 @@ import { registerUser } from "../services/authService";
 import AuthLayout from "../components/auth/authLayout";
 import InputField from "../../../components/common/InputField";
 import SelectField from "../../../components/common/SelectField";
-import PrimaryButton from "../../../components/common/PrimaryButton";
+import AuthButton from "../components/auth/AuthButton";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -99,9 +99,9 @@ const Register = () => {
             error={errors.confirmPassword}
           />
           <SelectField name="role" register={register} error={errors.role} />
-          <PrimaryButton type="submit" disabled={isSubmitting}>
+          <AuthButton type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Registering..." : "Register"}
-          </PrimaryButton>
+          </AuthButton>
         </form>
         <p className="text-center text-sm text-gray-500 mt-6">
           Already have an account?{" "}
