@@ -4,6 +4,7 @@ const app = express(); //Create the Express App
 const authRoutes = require("./routes/authRoutes");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const employeeRoutes = require("./routes/employeeRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 app.use(express.json()); //Enable JSON body parsing
 //CORS
@@ -13,8 +14,11 @@ app.use(
   }),
 );
 app.use("/api/v1/auth", authRoutes);
+
 app.use("/api/v1/employees", employeeRoutes);
 app.use("/api/v1/employees/:id", employeeRoutes);
+// Dashboard
+app.use("/api/dashboard", dashboardRoutes);
 //Add a test route
 app.get("/", (req, res) => {
   res.status(200).json({
