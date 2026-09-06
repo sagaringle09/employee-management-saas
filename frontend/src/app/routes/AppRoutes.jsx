@@ -7,11 +7,12 @@ import AdminLayout from "@/layouts/admin/AdminLayout";
 import AdminDashboard from "@/features/dashboard/pages/AdminDashboard";
 import EmployeeList from "@/features/employee/pages/EmployeeList";
 import EmployeeDetails from "@/features/employee/pages/EmployeeDetails";
-
+import { Navigate } from "react-router-dom";
 const AppRoutes = () => {
   return (
     <Routes>
       {/* Public Routes */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       {/* Protected Routes */}
@@ -21,7 +22,7 @@ const AppRoutes = () => {
           <Route path="employees" element={<EmployeeList />} />
           <Route path="employees/new" element={<EmployeeForm />} />
           <Route path="employees/:id" element={<EmployeeDetails />} />
-          <Route path="employees/:id/edit" element={<EmployeeForm />   } />
+          <Route path="employees/:id/edit" element={<EmployeeForm />} />
         </Route>
       </Route>
     </Routes>
