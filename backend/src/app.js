@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express"); //import the Express
 const cors = require("cors");
 const app = express(); //Create the Express App
@@ -10,7 +11,7 @@ app.use(express.json()); //Enable JSON body parsing
 //CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
   }),
 );
 app.use("/api/v1/auth", authRoutes);
