@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { registerSchema } from "../validation/authSchema";
 import { registerUser } from "../services/authService";
-import AuthLayout from "../components/auth/authLayout";
+import AuthLayout from "../components/auth/AuthLayout";
 import InputField from "../../../components/common/InputField";
 import SelectField from "../../../components/common/SelectField";
 import AuthButton from "../components/auth/AuthButton";

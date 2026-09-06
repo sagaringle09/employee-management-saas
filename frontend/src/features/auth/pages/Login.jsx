@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { loginSchema } from "../validation/authSchema";
 import { loginUser } from "../services/authService";
-import AuthLayout from "../components/auth/authLayout";
+import AuthLayout from "../components/auth/AuthLayout";
 import InputField from "../../../components/common/InputField";
 import { setToken } from "../utils/authStorage";
 import { useDispatch } from "react-redux";
