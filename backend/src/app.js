@@ -18,7 +18,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/employees", employeeRoutes);
 app.use("/api/v1/employees/:id", employeeRoutes);
 // Dashboard
-app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/v1/dashboard", dashboardRoutes);
 //Add a test route
 app.get("/", (req, res) => {
   res.status(200).json({

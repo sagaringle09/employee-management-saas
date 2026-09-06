@@ -14,12 +14,60 @@ const getDashboardStatsService = async () => {
     FROM employees
   `);
 
+  const row = result.rows[0];
+
   return {
     success: true,
-    data: result.rows[0],
+    data: {
+      totalEmployees: Number(row.total_employees),
+      activeEmployees: Number(row.active_employees),
+      inactiveEmployees: Number(row.inactive_employees),
+      totalDepartments: Number(row.total_departments),
+    },
+  };
+};
+
+const getRecentEmployeesService = async () => {
+  const result = await pool.query(`
+    SELECT
+      id,
+      employee_code,
+      first_name,
+      last_name,
+      email,
+      department,
+      designation,
+      status,
+      created_at
+    FROM employees
+    ORDER BY created_at DESC
+    LIMIT 5
+  `);
+
+  return {
+    success: true,
+    data: result.rows,
+  };
+};
+
+const getEmployeesByDepartmentService = async () => {
+  const result = await pool.query(`
+    SELECT
+      department,
+      COUNT(*) AS employee_count
+    FROM employees
+    GROUP BY department
+    ORDER BY employee_count DESC
+  `);
+
+  return {
+    success: true,
+    data: result.rows,
   };
 };
 
 module.exports = {
   getDashboardStatsService,
+  getRecentEmployeesService,
+  getEmployeesByDepartmentService,
 };
