@@ -1,31 +1,43 @@
-import { Route, Routes } from "react-router-dom";
-import Register from "../../features/auth/pages/Register";
-import Login from "../../features/auth/pages/Login";
+import { lazy, Suspense } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-import EmployeeForm from "@/features/employee/pages/EmployeeForm";
 import AdminLayout from "@/layouts/admin/AdminLayout";
-import AdminDashboard from "@/features/dashboard/pages/AdminDashboard";
-import EmployeeList from "@/features/employee/pages/EmployeeList";
-import EmployeeDetails from "@/features/employee/pages/EmployeeDetails";
-import { Navigate } from "react-router-dom";
+
+const Register = lazy(() => import("../../features/auth/pages/Register"));
+const Login = lazy(() => import("../../features/auth/pages/Login"));
+const EmployeeForm = lazy(
+  () => import("@/features/employee/pages/EmployeeForm"),
+);
+const AdminDashboard = lazy(
+  () => import("@/features/dashboard/pages/AdminDashboard"),
+);
+const EmployeeList = lazy(
+  () => import("@/features/employee/pages/EmployeeList"),
+);
+const EmployeeDetails = lazy(
+  () => import("@/features/employee/pages/EmployeeDetails"),
+);
+
 const AppRoutes = () => {
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
-      {/* Protected Routes */}
-      <Route element={<ProtectedRoute />}>
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          <Route path="employees" element={<EmployeeList />} />
-          <Route path="employees/new" element={<EmployeeForm />} />
-          <Route path="employees/:id" element={<EmployeeDetails />} />
-          <Route path="employees/:id/edit" element={<EmployeeForm />} />
+    <Suspense fallback={<div>Loading...</div>}>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="employees" element={<EmployeeList />} />
+            <Route path="employees/new" element={<EmployeeForm />} />
+            <Route path="employees/:id" element={<EmployeeDetails />} />
+            <Route path="employees/:id/edit" element={<EmployeeForm />} />
+          </Route>
         </Route>
-      </Route>
-    </Routes>
+      </Routes>
+    </Suspense>
   );
 };
 export default AppRoutes;
